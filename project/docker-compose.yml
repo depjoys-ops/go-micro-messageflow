@@ -1,0 +1,20 @@
+version: '3'
+
+services:
+  broker-service:
+    build:
+      context: ./../broker-service
+      dockerfile: ./../broker-service/build/docker/Dockerfile
+    image: broker-service
+    container_name: broker-service
+    volumes:
+      - ./../broker-service/config:/usr/local/bin/config
+    environment:
+      - CONFIG_PATH=/usr/local/bin/config/local.yaml
+    restart: always
+    ports:
+      - "4000:4000"
+    deploy:
+      mode: replicated
+      replicas: 1
+
