@@ -2,11 +2,15 @@
 	"folders": [
 		{
 			"path": "front-end",
-			"name": "⭐ front-end"
+			"name": "💻 front-end"
 		},
 		{
 			"path": "broker-service",
 			"name": "🚀 broker-service"
+		},
+		{
+			"path": "auth-service",
+			"name": "🔐 auth-service"
 		},
 		{
 			"path": "project"
