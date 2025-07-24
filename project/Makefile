@@ -3,19 +3,22 @@ BROKER_BINARY=broker-service
 
 up:
 	@echo "Starting Docker containers..."
-	docker-compose up -d
+	docker compose down
+	docker compose up -d
 	@echo "Docker containers started!"
 
-up_build: build_broker
+up_build: down build_broker
 	@echo "Stopping and removing docker containers"
-	docker-compose down
+	docker compose down
 	@echo "Building and starting docker containers..."
-	docker-compose up --build --no-cache -d
+	@docker compose build --no-cache
+	@docker compose up -d
 	@echo "Docker containers built and started!"
 
 down:
 	@echo "Stopping docker compose..."
-	docker-compose down
+	docker compose down
+	docker image prune -f
 	@echo "Done!"
 
 build_broker:
