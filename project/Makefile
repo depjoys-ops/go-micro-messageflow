@@ -26,12 +26,12 @@ down: clean_build
 
 build_broker:
 	@echo "Building ${BROKER_BINARY} binary..."
-	cd ../${BROKER_BINARY} && GOOS=linux GOARCH=amd64 go build -o ./bin/api/${BROKER_BINARY} ./cmd/api
+	cd ../${BROKER_BINARY} && GOOS=linux GOARCH=amd64 go build -o ./bin/app/${BROKER_BINARY} ./cmd/app
 	@echo "Done!"
 
 build_auth:
 	@echo "Building ${AUTH_BINARY} binary..."
-	cd ../${AUTH_BINARY} && GOOS=linux GOARCH=amd64 go build -o ./bin/api/${AUTH_BINARY} ./cmd/api
+	cd ../${AUTH_BINARY} && GOOS=linux GOARCH=amd64 go build -o ./bin/app/${AUTH_BINARY} ./cmd/app
 	@echo "Done!"
 
 build_front:
@@ -43,8 +43,8 @@ build_front:
 
 clean_build:
 	@echo "Removing binaries..."
-	@rm -f ./bin/api/${BROKER_BINARY}
-	@rm -f ./bin/api/${AUTH_BINARY}
+	@rm -f ./bin/app/${BROKER_BINARY}
+	@rm -f ./bin/app/${AUTH_BINARY}
 	@rm -f ./bin/web/${FRONT_END_BINARY}
 	@echo "Done!"
 
@@ -52,22 +52,22 @@ clean_build:
 
 start_broker: build_broker
 	@echo "Running ${BROKER_BINARY}"
-	cd ../${BROKER_BINARY} && export CONFIG_PATH=$(CONFIG_PATH) && ./bin/api/${BROKER_BINARY} &
+	cd ../${BROKER_BINARY} && export CONFIG_PATH=$(CONFIG_PATH) && ./bin/app/${BROKER_BINARY} &
 
 stop_broker:
 	@echo "Stopping ${BROKER_BINARY}..."
-	@-pkill -SIGTERM -f "./bin/api/${BROKER_BINARY}"
+	@-pkill -SIGTERM -f "./bin/app/${BROKER_BINARY}"
 	@echo "Stopped ${BROKER_BINARY}!"
 
 ############################################################################################
 
 start_auth: build_auth
 	@echo "Running ${AUTH_BINARY}"
-	cd ../${AUTH_BINARY} && export CONFIG_PATH=$(CONFIG_PATH) && ./bin/api/${AUTH_BINARY} &
+	cd ../${AUTH_BINARY} && export CONFIG_PATH=$(CONFIG_PATH) && ./bin/app/${AUTH_BINARY} &
 
 stop_auth:
 	@echo "Stopping ${AUTH_BINARY}..."
-	@-pkill -SIGTERM -f "./bin/api/${AUTH_BINARY}"
+	@-pkill -SIGTERM -f "./bin/app/${AUTH_BINARY}"
 	@echo "Stopped ${AUTH_BINARY}!"
 
 ############################################################################################
