@@ -8,7 +8,7 @@ services:
     volumes:
       - ./../broker-service/config:/usr/local/bin/config
     environment:
-      - CONFIG_PATH=/usr/local/bin/config/local.yaml
+      - CONFIG_PATH=/usr/local/bin/config/config.yaml
     restart: always
     ports:
       - "4000:4000"
