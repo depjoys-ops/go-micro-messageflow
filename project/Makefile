@@ -36,7 +36,7 @@ build_auth:
 
 build_front:
 	@echo "Building ${FRONT_END_BINARY} binary..."
-	cd ../${FRONT_END_BINARY} && GOOS=linux GOARCH=amd64 go build -o ./bin/web/${FRONT_END_BINARY} ./cmd/web
+	cd ../${FRONT_END_BINARY} && GOOS=linux GOARCH=amd64 go build -o ./bin/app/${FRONT_END_BINARY} ./cmd/app
 	@echo "Done!"
 
 ############################################################################################
@@ -45,7 +45,7 @@ clean_build:
 	@echo "Removing binaries..."
 	@rm -f ./bin/app/${BROKER_BINARY}
 	@rm -f ./bin/app/${AUTH_BINARY}
-	@rm -f ./bin/web/${FRONT_END_BINARY}
+	@rm -f ./bin/app/${FRONT_END_BINARY}
 	@echo "Done!"
 
 ############################################################################################
@@ -74,11 +74,11 @@ stop_auth:
 
 start_front: build_front
 	@echo "Running ${FRONT_END_BINARY}"
-	cd ../${FRONT_END_BINARY} && ./bin/web/${FRONT_END_BINARY} &
+	cd ../${FRONT_END_BINARY} && ./bin/app/${FRONT_END_BINARY} &
 
 stop_front:
 	@echo "Stopping ${FRONT_END_BINARY}..."
-	@-pkill -SIGTERM -f "./bin/web/${FRONT_END_BINARY}"
+	@-pkill -SIGTERM -f "./bin/app/${FRONT_END_BINARY}"
 	@echo "Stopped ${FRONT_END_BINARY}!"
 
 ############################################################################################
