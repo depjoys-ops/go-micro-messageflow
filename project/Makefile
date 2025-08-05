@@ -22,6 +22,12 @@ down: clean_build
 	docker image prune -f
 	@echo "Done!"
 
+down_volumes: clean_build
+	@echo "Stopping docker compose..."
+	docker compose down -v
+	docker image prune -f
+	@echo "Done!"
+
 ############################################################################################
 
 build_broker:
