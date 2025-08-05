@@ -25,10 +25,12 @@ services:
       mode: replicated
       replicas: 1
     environment:
+      POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       PGDATA: /var/lib/postgresql/data/messageflow
     volumes:
       - messageflow:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
 
 volumes:
   messageflow:
