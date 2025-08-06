@@ -15,10 +15,37 @@ services:
     deploy:
       mode: replicated
       replicas: 1
+    depends_on:
+      postgres-service:
+        condition: service_healthy
+    networks:
+      - messageflow
 
-  postgres:
+  auth-service:
+    build:
+      context: ./../auth-service
+      dockerfile: ./../auth-service/build/docker/Dockerfile
+    image: auth-service
+    container_name: auth-service
+    volumes:
+      - ./../auth-service/config:/usr/local/bin/config
+    environment:
+      - CONFIG_PATH=/usr/local/bin/config/config.yaml
+    restart: always
+    ports:
+      - "4001:4001"
+    deploy:
+      mode: replicated
+      replicas: 1
+    depends_on:
+      postgres-service:
+        condition: service_healthy
+    networks:
+      - messageflow
+
+  postgres-service:
     image: postgres:16-alpine
-    container_name: postgres
+    container_name: postgres-service
     ports:
       - "5433:5432" #psql -h localhost -p 5433 -U postgres
     deploy:
@@ -31,6 +58,16 @@ services:
     volumes:
       - messageflow:/var/lib/postgresql/data
       - ./init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - messageflow
 
 volumes:
+  messageflow:
+
+networks:
   messageflow:
