@@ -49,9 +49,9 @@ build_front:
 
 clean_build:
 	@echo "Removing binaries..."
-	@rm -f ./bin/app/${BROKER_BINARY}
-	@rm -f ./bin/app/${AUTH_BINARY}
-	@rm -f ./bin/app/${FRONT_END_BINARY}
+	@rm -f ../${BROKER_BINARY}/bin/app/${BROKER_BINARY}
+	@rm -f ../${AUTH_BINARY}/bin/app/${AUTH_BINARY}
+	@rm -f ../${FRONT_END_BINARY}/bin/app/${FRONT_END_BINARY}
 	@echo "Done!"
 
 ############################################################################################
