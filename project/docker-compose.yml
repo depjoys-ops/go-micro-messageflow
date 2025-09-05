@@ -11,13 +11,17 @@ services:
       - CONFIG_PATH=/usr/local/bin/config/config.yaml
     restart: always
     ports:
-      - "4000:4000"
+      - "4000:80"
     deploy:
       mode: replicated
       replicas: 1
     depends_on:
-      postgres-service:
-        condition: service_healthy
+      - postgres-service
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/ping || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     networks:
       - messageflow
 
@@ -33,13 +37,17 @@ services:
       - CONFIG_PATH=/usr/local/bin/config/config.yaml
     restart: always
     ports:
-      - "4001:4001"
+      - "4001:80"
     deploy:
       mode: replicated
       replicas: 1
     depends_on:
-      postgres-service:
-        condition: service_healthy
+      - postgres-service
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f http://localhost:80/ping || exit 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
     networks:
       - messageflow
 
