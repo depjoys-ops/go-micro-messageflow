@@ -74,8 +74,52 @@ services:
     networks:
       - messageflow
 
+#-------------------------------------------------------------------------------
+
+  elasticsearch:
+    image: elasticsearch:9.1.3
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms1g -Xmx1g
+      - xpack.security.enabled=false
+    volumes:
+      - esdata:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    networks:
+      - messageflow
+
+  kibana:
+    image: kibana:9.1.3
+    container_name: kibana
+    depends_on:
+      - elasticsearch
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    networks:
+      - messageflow
+
+  vector:
+    image: timberio/vector:0.49.0-debian
+    container_name: vector
+    user: root
+    command: ["--config", "/etc/vector/vector.toml"]
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - ./vector.toml:/etc/vector/vector.toml:ro
+    depends_on:
+      - elasticsearch
+    networks:
+      - messageflow
+
+#-------------------------------------------------------------------------------
+
 volumes:
   messageflow:
+  esdata:
 
 networks:
   messageflow:

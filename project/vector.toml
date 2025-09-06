@@ -1,0 +1,26 @@
+[sources.docker_logs]
+type = "docker_logs"
+include_containers = ["broker-service", "auth-service"]
+
+[transforms.parse_json]
+type = "remap"
+inputs = ["docker_logs"]
+source = '''
+. = parse_json!(.message)
+'''
+
+[transforms.add_metadata]
+type = "remap"
+inputs = ["parse_json"]
+source = '''
+.service = .container_name
+.env = "dev"
+.version = "1.0.0"
+'''
+
+[sinks.elasticsearch]
+type = "elasticsearch"
+inputs = ["add_metadata"]
+endpoints = ["http://elasticsearch:9200"]
+mode = "bulk"
+compression = "gzip"
